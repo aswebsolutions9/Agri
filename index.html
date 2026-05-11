@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AS Automobiles | Growing Nature. Building Trust.</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --fresh-green: #2d6a4f;
+            --leaf-bright: #74c69d;
+            --earth-brown: #4e342e;
+            --cream-white: #f8f9fa;
+            --sun-yellow: #ffb703;
+            --forest-deep: #1b4332;
+            --glass: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.3);
+            --text: #1b4332;
+            --bg: #fdfdfb;
+            --transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        [data-theme="dark"] {
+            --bg: #0d1b15;
+            --text: #f8f9fa;
+            --glass: rgba(27, 67, 50, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --cream-white: #1b4332;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: none;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, .premium-font { font-family: 'Playfair Display', serif; }
+
+        /* --- CURSOR EFFECT --- */
+        #cursor {
+            width: 10px; height: 10px; background: var(--leaf-bright);
+            border-radius: 50%; position: fixed; pointer-events: none; z-index: 10000;
+        }
+        #cursor-glow {
+            width: 40px; height: 40px; border: 1px solid var(--leaf-bright);
+            border-radius: 50%; position: fixed; pointer-events: none; z-index: 9999;
+            transition: transform 0.15s ease-out;
+        }
+
+        /* --- SECTION 1: AGRO LOADER --- */
+        #loader {
+            position: fixed; inset: 0; background: var(--forest-deep);
+            display: flex; flex-direction: column; justify-content: center;
+            align-items: center; z-index: 10001; transition: 0.8s ease-in-out;
+        }
+        .seed-box { position: relative; width: 100px; height: 100px; }
+        .seed { 
+            width: 20px; height: 12px; background: var(--earth-brown); 
+            border-radius: 50%; position: absolute; bottom: 0; left: 40%;
+            animation: grow 2.5s infinite;
+        }
+        .plant-stem {
+            width: 4px; height: 0; background: var(--leaf-bright);
+            position: absolute; bottom: 12px; left: 48%;
+            animation: stem-grow 2.5s infinite;
+        }
+        @keyframes grow { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
+        @keyframes stem-grow { 0% { height: 0; } 60% { height: 40px; } 100% { height: 40px; opacity: 0; } }
+        .loader-text { margin-top: 30px; color: white; letter-spacing: 3px; font-size: 0.8rem; font-weight: 300; }
+
+        /* --- SECTION 2: NAVBAR --- */
+        nav {
+            position: fixed; top: 0; width: 100%; padding: 30px 8%;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 1000; transition: var(--transition);
+        }
+        nav.scrolled {
+            padding: 15px 8%; background: var(--glass);
+            backdrop-filter: blur(15px); border-bottom: 1px solid var(--glass-border);
+        }
+        .logo { font-size: 1.5rem; font-weight: 700; color: var(--fresh-green); }
+        .nav-links { display: flex; gap: 30px; list-style: none; }
+        .nav-links a { 
+            text-decoration: none; color: var(--text); font-weight: 600; 
+            font-size: 0.9rem; transition: 0.3s;
+        }
+        .nav-links a:hover { color: var(--leaf-bright); }
+
+        /* --- SECTION 3: HERO --- */
+        .hero {
+            height: 100vh; display: flex; align-items: center; padding: 0 8%;
+            background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&q=80&w=2000');
+            background-size: cover; background-position: center; position: relative;
+        }
+        .hero::before {
+            content: ''; position: absolute; inset: 0;
+            background: radial-gradient(circle at 20% 30%, rgba(255, 183, 3, 0.15), transparent);
+        }
+        .hero-content { max-width: 800px; z-index: 10; color: white; }
+        .badge {
+            background: var(--sun-yellow); color: var(--forest-deep);
+            padding: 5px 15px; border-radius: 20px; font-size: 0.8rem; font-weight: 700;
+            display: inline-block; margin-bottom: 20px;
+        }
+        .hero h1 { font-size: 4.5rem; line-height: 1.1; margin-bottom: 20px; }
+        .hero p { font-size: 1.2rem; margin-bottom: 35px; opacity: 0.9; max-width: 600px; }
+        
+        .btn {
+            padding: 16px 35px; border-radius: 50px; text-decoration: none;
+            font-weight: 600; display: inline-block; transition: var(--transition);
+        }
+        .btn-green { background: var(--fresh-green); color: white; border: 1px solid var(--fresh-green); }
+        .btn-green:hover { background: transparent; color: white; transform: translateY(-3px); }
+        .btn-wa { background: #25d366; color: white; margin-left: 15px; }
+
+        .inquiry-card {
+            position: absolute; right: 8%; bottom: -50px; width: 400px;
+            background: var(--glass); backdrop-filter: blur(20px);
+            padding: 40px; border-radius: 20px; border: 1px solid var(--glass-border);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1); z-index: 20;
+        }
+
+        /* --- SECTION 4: PRODUCTS --- */
+        section { padding: 120px 8%; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .card {
+            background: var(--cream-white); border-radius: 20px; overflow: hidden;
+            border: 1px solid var(--glass-border); transition: var(--transition);
+        }
+        .card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(45, 106, 79, 0.1); }
+        .card-img { height: 250px; overflow: hidden; }
+        .card-img img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+        .card:hover .card-img img { transform: scale(1.15); }
+        .card-body { padding: 30px; }
+
+        /* --- LEAF PARTICLES --- */
+        .leaf {
+            position: fixed; pointer-events: none; z-index: 5;
+            width: 15px; height: 15px; background: var(--leaf-bright);
+            clip-path: ellipse(50% 100% at 50% 0%); opacity: 0.3;
+            animation: drift 10s linear infinite;
+        }
+        @keyframes drift {
+            0% { transform: translateY(-10vh) rotate(0deg); left: var(--l); }
+            100% { transform: translateY(110vh) rotate(360deg); left: var(--l); }
+        }
+
+        /* --- UTILS --- */
+        .reveal { opacity: 0; transform: translateY(30px); transition: 1s all ease; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        
+        .wa-float {
+            position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px;
+            background: #25d366; border-radius: 50%; display: flex; justify-content: center;
+            align-items: center; box-shadow: 0 10px 20px rgba(0,0,0,0.2); z-index: 1000;
+        }
+
+        /* --- DARK MODE TOGGLE --- */
+        .theme-switch {
+            width: 40px; height: 40px; border-radius: 50%; background: var(--glass);
+            display: flex; justify-content: center; align-items: center; border: none;
+            color: var(--text); font-size: 1.2rem;
+        }
+
+        @media (max-width: 992px) {
+            .hero h1 { font-size: 3rem; }
+            .inquiry-card { position: relative; right: 0; bottom: 0; width: 100%; margin-top: 50px; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- LOADER -->
+    <div id="loader">
+        <div class="seed-box">
+            <div class="seed"></div>
+            <div class="plant-stem"></div>
+        </div>
+        <p class="loader-text">GROWING FRESH POSSIBILITIES...</p>
+    </div>
+
+    <!-- CURSOR -->
+    <div id="cursor"></div>
+    <div id="cursor-glow"></div>
+
+    <!-- NAVBAR -->
+    <nav id="navbar">
+        <div class="logo">AS <span style="color: var(--leaf-bright);">AGRO</span></div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#products">Products</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#gallery">Gallery</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+        <div style="display: flex; align-items: center; gap: 20px;">
+            <button class="theme-switch" onclick="toggleTheme()">🌓</button>
+            <a href="#" class="btn btn-green" style="padding: 10px 25px;">Get Quote</a>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <span class="badge">Premium Agro & Organic Business</span>
+            <h1 class="reveal">Fresh Agriculture <br>Products For A <br><span style="color: var(--sun-yellow);">Better Tomorrow</span></h1>
+            <p class="reveal">Showcase agro products, dairy services, farming solutions and customer inquiries with a modern mobile-friendly website.</p>
+            <div class="reveal">
+                <a href="#products" class="btn btn-green">Explore Products</a>
+                <a href="#" class="btn btn-wa">WhatsApp Inquiry</a>
+            </div>
+        </div>
+
+        <div class="inquiry-card reveal">
+            <h3 style="margin-bottom: 20px;">Quick Inquiry</h3>
+            <div style="margin-bottom: 15px;">
+                <label style="font-size: 0.8rem; display: block; margin-bottom: 5px;">Product Type</label>
+                <select style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px;">
+                    <option>Organic Vegetables</option>
+                    <option>Fresh Dairy</option>
+                    <option>Seeds & Fertlizers</option>
+                </select>
+            </div>
+            <div style="margin-bottom: 20px;">
+                <label style="font-size: 0.8rem; display: block; margin-bottom: 5px;">Quantity</label>
+                <input type="text" placeholder="e.g. 500kg" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px;">
+            </div>
+            <button class="btn btn-green" style="width: 100%;">Get Best Quote</button>
+        </div>
+    </section>
+
+    <!-- PRODUCTS -->
+    <section id="products">
+        <div style="text-align: center; margin-bottom: 60px;">
+            <h2 style="font-size: 3rem;">Our Premium <span style="color:var(--fresh-green)">Products</span></h2>
+            <p style="opacity: 0.7;">Nature-friendly, organic and certified quality products.</p>
+        </div>
+
+        <div class="grid">
+            <!-- Product 1 -->
+            <div class="card reveal">
+                <div class="card-img">
+                    <img src="https://images.unsplash.com/photo-1566385101042-1a0aa0c12e8c?auto=format&fit=crop&q=80&w=600" alt="Veg">
+                </div>
+                <div class="card-body">
+                    <h3>Organic Vegetables</h3>
+                    <p style="font-size: 0.9rem; margin: 15px 0;">Farm-fresh vegetables grown without any chemical pesticides.</p>
+                    <div style="display: flex; gap: 10px;">
+                        <button class="btn btn-green" style="padding: 8px 20px; font-size: 0.8rem;">Inquire</button>
+                        <button style="border: none; background: #25d366; color: white; width: 40px; border-radius: 50%;">📞</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Product 2 -->
+            <div class="card reveal" style="transition-delay: 0.1s;">
+                <div class="card-img">
+                    <img src="https://images.unsplash.com/photo-1528498033373-3c6c08e93d79?auto=format&fit=crop&q=80&w=600" alt="Fruit">
+                </div>
+                <div class="card-body">
+                    <h3>Fresh Fruits</h3>
+                    <p style="font-size: 0.9rem; margin: 15px 0;">Sweet, ripe and hand-picked fruits from our managed orchards.</p>
+                    <div style="display: flex; gap: 10px;">
+                        <button class="btn btn-green" style="padding: 8px 20px; font-size: 0.8rem;">Inquire</button>
+                        <button style="border: none; background: #25d366; color: white; width: 40px; border-radius: 50%;">📞</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Product 3 -->
+            <div class="card reveal" style="transition-delay: 0.2s;">
+                <div class="card-img">
+                    <img src="https://images.unsplash.com/photo-1550583724-125581f77833?auto=format&fit=crop&q=80&w=600" alt="Dairy">
+                </div>
+                <div class="card-body">
+                    <h3>Dairy Products</h3>
+                    <p style="font-size: 0.9rem; margin: 15px 0;">Pure, unadulterated milk and dairy products from our high-tech farm.</p>
+                    <div style="display: flex; gap: 10px;">
+                        <button class="btn btn-green" style="padding: 8px 20px; font-size: 0.8rem;">Inquire</button>
+                        <button style="border: none; background: #25d366; color: white; width: 40px; border-radius: 50%;">📞</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ABOUT SECTION -->
+    <section id="about" style="background: var(--cream-white);">
+        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 50px;">
+            <div style="flex: 1; min-width: 300px;" class="reveal">
+                <img src="https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?auto=format&fit=crop&q=80&w=800" style="width: 100%; border-radius: 20px; box-shadow: 20px 20px 0 var(--leaf-bright);">
+            </div>
+            <div style="flex: 1; min-width: 300px;" class="reveal">
+                <h2 style="font-size: 3rem; margin-bottom: 25px;">Trusted Agro Solutions With <span style="color:var(--fresh-green)">Fresh Quality</span></h2>
+                <p>AS Web Solutions provides a bridge between traditional farming excellence and modern digital connectivity. We empower agro businesses to reach global standards through premium branding and efficient inquiry systems.</p>
+                <ul style="list-style: none; margin-top: 30px;">
+                    <li style="margin-bottom: 15px;">✅ 100% Organic Certified Processes</li>
+                    <li style="margin-bottom: 15px;">✅ Directly Sourced from Local Farmers</li>
+                    <li style="margin-bottom: 15px;">✅ Temperature-Controlled Logistics</li>
+                    <li>✅ 24/7 Expert Agro Consultation</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- STATS -->
+    <section style="background: var(--forest-deep); color: white; text-align: center;">
+        <div class="grid">
+            <div class="reveal">
+                <h2 style="font-size: 3.5rem; color: var(--sun-yellow);">100+</h2>
+                <p>Organic Products</p>
+            </div>
+            <div class="reveal">
+                <h2 style="font-size: 3.5rem; color: var(--sun-yellow);">500+</h2>
+                <p>Happy Customers</p>
+            </div>
+            <div class="reveal">
+                <h2 style="font-size: 3.5rem; color: var(--sun-yellow);">50+</h2>
+                <p>Farmers Connected</p>
+            </div>
+            <div class="reveal">
+                <h2 style="font-size: 3.5rem; color: var(--sun-yellow);">24/7</h2>
+                <p>Inquiry Support</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA SECTION -->
+    <section style="text-align: center; position: relative; overflow: hidden; background: url('https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&q=80&w=2000'); background-size: cover; color: white;">
+        <div style="position: absolute; inset: 0; background: rgba(27, 67, 50, 0.8);"></div>
+        <div style="position: relative; z-index: 10;" class="reveal">
+            <h2 style="font-size: 3.5rem; margin-bottom: 20px;">Grow Your Agro Business Online</h2>
+            <p style="margin-bottom: 40px; font-size: 1.2rem;">Showcase products, receive inquiries and build trust with a premium agriculture website.</p>
+            <a href="#contact" class="btn btn-green">Send Inquiry Now</a>
+            <a href="#" class="btn btn-wa">WhatsApp Now</a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer style="padding: 80px 8% 40px; background: var(--bg);">
+        <div class="grid" style="border-bottom: 1px solid var(--glass-border); padding-bottom: 50px;">
+            <div>
+                <h3 class="logo">AS AGRO</h3>
+                <p style="margin-top: 20px; opacity: 0.7;">Premium agriculture and organic farming solutions. We grow nature to build your trust.</p>
+            </div>
+            <div>
+                <h4 style="margin-bottom: 20px;">Quick Links</h4>
+                <ul style="list-style: none; opacity: 0.7;">
+                    <li>Home</li><li>Products</li><li>Services</li><li>About Us</li>
+                </ul>
+            </div>
+            <div>
+                <h4 style="margin-bottom: 20px;">Contact Us</h4>
+                <p style="opacity: 0.7;">📍 Green Valley, Agro Hub<br>📞 +91 98765 43210<br>✉️ info@asagro.com</p>
+            </div>
+        </div>
+        <p style="text-align: center; margin-top: 40px; font-size: 0.8rem; opacity: 0.5;">© 2026 AS Web Solutions. All Rights Reserved.</p>
+    </footer>
+
+    <a href="#" class="wa-float">
+        <svg fill="white" width="30" height="30" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.438 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884 0 2.225.584 3.914 1.574 5.611l-.973 3.548 3.888-.96zm11.367-7.157c-.301-.15-.1-.417-.666-.334-.179-.247-.526-.349-.783-.417-.257-.067-2.106-.883-2.106-.883-.301-.151-.518-.227-.718.075s-.769.979-.944 1.18-.351.226-.651.075-1.272-.469-2.423-1.494c-.895-.797-1.498-1.784-1.674-2.085s-.019-.465.131-.614c.135-.133.301-.351.451-.526.149-.174.199-.299.299-.499s.05-.375-.025-.526c-.075-.151-.718-1.73-.997-2.404-.265-.64-.533-.55-.718-.55h-.614c-.201 0-.527.075-.802.375s-1.053 1.028-1.053 2.507c0 1.479 1.078 2.909 1.228 3.109s2.122 3.239 5.138 4.542c.717.311 1.277.496 1.714.635.722.23 1.378.197 1.897.12.579-.086 1.781-.727 2.032-1.429.251-.702.251-1.305.176-1.43z"/></svg>
+    </a>
+
+    <script>
+        // --- LOADER ---
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loader').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('loader').style.display = 'none';
+                }, 800);
+            }, 2500);
+        });
+
+        // --- CURSOR ---
+        const cursor = document.getElementById('cursor');
+        const glow = document.getElementById('cursor-glow');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            glow.style.left = e.clientX - 15 + 'px';
+            glow.style.top = e.clientY - 15 + 'px';
+        });
+
+        // --- LEAF GENERATOR ---
+        function createLeaves() {
+            for(let i=0; i<15; i++) {
+                let leaf = document.createElement('div');
+                leaf.className = 'leaf';
+                leaf.style.setProperty('--l', Math.random() * 100 + 'vw');
+                leaf.style.animationDelay = Math.random() * 10 + 's';
+                document.body.appendChild(leaf);
+            }
+        }
+        createLeaves();
+
+        // --- SCROLL EFFECTS ---
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) nav.classList.add('scrolled');
+            else nav.classList.remove('scrolled');
+
+            const reveals = document.querySelectorAll('.reveal');
+            reveals.forEach(el => {
+                const windowHeight = window.innerHeight;
+                const revealTop = el.getBoundingClientRect().top;
+                if (revealTop < windowHeight - 100) el.classList.add('active');
+            });
+        });
+
+        // --- THEME TOGGLE ---
+        function toggleTheme() {
+            const html = document.documentElement;
+            const current = html.getAttribute('data-theme');
+            html.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
+        }
+    </script>
+</body>
+</html>
